@@ -1,6 +1,6 @@
 (in-package #:ec2-price-finder)
 
-(defparameter *cache-buster* 2)
+(defparameter *cache-buster* 3)
 
 (defparameter *default-region-codes*
   '("us-east-1" "eu-west-1" "ap-south-1"))
@@ -286,7 +286,7 @@
              (:div
               (:small (:span "Last updated on ")
                       (:time :datetime (local-time:format-timestring nil (publication-date *document*))
-                             (format nil "~A."
+                             (format nil "~A. "
                                      (local-time:format-rfc1123-timestring nil (publication-date *document*))))
                       (:span "Prices displayed are for " (:b "On-Demand") " instances only.")))
              (:table
