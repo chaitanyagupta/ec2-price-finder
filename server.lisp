@@ -1,6 +1,6 @@
 (in-package #:ec2-price-finder)
 
-(defparameter *cache-buster* 3)
+(defparameter *cache-buster* 4)
 
 (defparameter *default-region-codes*
   '("us-east-1" "eu-west-1" "ap-south-1"))
@@ -80,6 +80,10 @@
      :margin 0
      :padding 0)))
 
+(defun fav-icon ()
+  (spinneret:with-html
+    (:link :rel "icon" :href "data:,")))
+
 (defun not-found ()
   (setf (hunchentoot:return-code*) hunchentoot:+http-not-found+)
   (spinneret:with-html-string
@@ -88,6 +92,7 @@
      (:head
       (:title "Not Found")
       (meta-viewport)
+      (fav-icon)
       (:link :rel "stylesheet" :href *css-beautifier*)
       (:style (:raw (app-css))))
      (:body
@@ -223,6 +228,7 @@
      (:head
       (:title "EC2 Price Finder")
       (meta-viewport)
+      (fav-icon)
       (:link :rel "stylesheet" :href *css-beautifier*)
       (:style (:raw (app-css))))
      (:body
