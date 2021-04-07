@@ -1,0 +1,6 @@
+*~
+*.fasl
+*.csv
+.env
+*.core
+nohup.out
