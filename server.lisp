@@ -1,6 +1,6 @@
 (in-package #:ec2-price-finder)
 
-(defparameter *cache-buster* 1)
+(defparameter *cache-buster* 2)
 
 (defparameter *default-region-codes*
   '("us-east-1" "eu-west-1" "ap-south-1"))
