@@ -1,16 +1,11 @@
 (in-package #:ec2-price-finder)
 
-(defparameter *cache-buster* 4)
+(defparameter *cache-buster* 5)
 
 (defparameter *default-region-codes*
   '("us-east-1" "eu-west-1" "ap-south-1"))
 
 (defparameter *css-beautifier* "https://cdn.jsdelivr.net/npm/picnic")
-
-(defun meta-viewport ()
-  (spinneret:with-html
-    (:meta :name "viewport"
-           :content "width=device-width,initial-scale=1,user-scalable=no")))
 
 (defun app-css ()
   (lass:compile-and-write
@@ -80,9 +75,16 @@
      :margin 0
      :padding 0)))
 
-(defun fav-icon ()
+(defun head-common ()
   (spinneret:with-html
-    (:link :rel "icon" :href "data:,")))
+    ;; Make sure we look good on mobile
+    (:meta :name "viewport" :content "width=device-width,initial-scale=1,user-scalable=no")
+    ;; Tell browsers not to look for a favicon
+    (:link :rel "icon" :href "data:,")
+    ;; Beautify our page
+    (:link :rel "stylesheet" :href *css-beautifier*)
+    ;; Common CSS
+    (:style (:raw (app-css)))))
 
 (defun not-found ()
   (setf (hunchentoot:return-code*) hunchentoot:+http-not-found+)
@@ -91,10 +93,7 @@
     (:html
      (:head
       (:title "Not Found")
-      (meta-viewport)
-      (fav-icon)
-      (:link :rel "stylesheet" :href *css-beautifier*)
-      (:style (:raw (app-css))))
+      (head-common))
      (:body
       (:h1 "Not Found")
       (:p "The page you are requesting cannot be found. "
@@ -227,10 +226,7 @@
     (:html
      (:head
       (:title "EC2 Price Finder")
-      (meta-viewport)
-      (fav-icon)
-      (:link :rel "stylesheet" :href *css-beautifier*)
-      (:style (:raw (app-css))))
+      (head-common))
      (:body
       (:h1 (:a :href "/" "EC2 Price Finder"))
       (:p "Quickly find the cheapest EC2 instance for your needs")
@@ -261,9 +257,7 @@
     (:html
      (:head
       (:title "Find cheapest instances | EC2 Price Finder")
-      (meta-viewport)
-      (:link :rel "stylesheet" :href *css-beautifier*)
-      (:style (:raw (app-css))))
+      (head-common))
      (:body
       (:h1 (:a :href "/" "EC2 Price Finder"))
       (render-find-form :open-sections '(display)
@@ -359,9 +353,7 @@
           (:html
            (:head
             (:title (format nil "~A | EC2 Price Finder" instance-type))
-            (meta-viewport)
-            (:link :rel "stylesheet" :href *css-beautifier*)
-            (:style (:raw (app-css))))
+            (head-common))
            (:body
             (:h1 (:a :href "/" "EC2 Price Finder"))
             (:h2.no-top-padding instance-type)
